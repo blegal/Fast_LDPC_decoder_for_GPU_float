@@ -126,9 +126,9 @@ int main(int argc, char* argv[])
 		exit( 0 );
 	}
 
-    cudaSetDevice(0);
-    cudaDeviceReset( );
-    cudaThreadSynchronize();
+    cudaSetDevice        (0);
+    cudaDeviceReset      ( );
+    cudaThreadSynchronize( );
 
 	//
 	// ON VA PARSER LES ARGUMENTS DE LIGNE DE COMMANDE
