@@ -11,12 +11,7 @@
 
 #include "CGPU_Decoder_2NMS.h"
 #include "../transpose/GPU_Transpose.h"
-
-//extern __global__ void LDPC_Sched_Stage_1_2NMS(float var_nodes[_N],
-//		float var_mesgs[_M], unsigned int PosNoeudsVariable[_M],
-//   		unsigned int loops
-//		);
-
+#include "./cuda/CUDA_2NMS.h"
 
 CGPU_Decoder_2NMS::CGPU_Decoder_2NMS(int _nb_frames, int block_size, unsigned int n, unsigned int k, unsigned int m):
 		CGPUDecoder(_nb_frames, block_size, n, k, m)
@@ -28,7 +23,7 @@ CGPU_Decoder_2NMS::CGPU_Decoder_2NMS(int _nb_frames, int block_size, unsigned in
 	struct cudaDeviceProp devProp;
   	cudaGetDeviceProperties(&devProp, 0);
   	struct cudaFuncAttributes attr;
-	cudaFuncGetAttributes(&attr, LDPC_Sched_Stage_1_2NMS);
+	cudaFuncGetAttributes(&attr, Horiz_layered_LDPC_decoder_2NMS);
   	int nMP      = devProp.multiProcessorCount; // NOMBRE DE STREAM PROCESSOR
   	int nWarp    = attr.maxThreadsPerBlock/32;  // PACKET DE THREADs EXECUTABLES EN PARALLELE
   	int nThreads = nWarp * 32;					// NOMBRE DE THREAD MAXI PAR SP
@@ -72,7 +67,7 @@ void CGPU_Decoder_2NMS::decode(float Intrinsic_fix[_N], int Rprime_fix[_N], int 
 		transposeDiagonal<<<grid, threads>>>((float*)device_V, (float*)d_MSG_C_2_V, _N, nb_frames);
 	}
 
-	LDPC_Sched_Stage_1_2NMS<<<nb_blocks, BLOCK_SIZE>>>(device_V, d_MSG_C_2_V, d_transpose, nombre_iterations);
+	Horiz_layered_LDPC_decoder_2NMS<<<nb_blocks, BLOCK_SIZE>>>(device_V, d_MSG_C_2_V, d_transpose, nombre_iterations);
 
 	{
 		// REORDERING THE LDPC CODEWORDS

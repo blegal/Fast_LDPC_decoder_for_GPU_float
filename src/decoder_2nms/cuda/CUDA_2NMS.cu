@@ -28,7 +28,7 @@
 #define invc(S,_X)	((S==1)?_X:-_X)		// SI 1=> ALORS CHANGEMENT DE SIGNE
 
 
-__global__ void __launch_bounds__(128, 2) LDPC_Sched_Stage_1_2NMS(float var_nodes[_N],
+__global__ void __launch_bounds__(128, 2) Horiz_layered_LDPC_decoder_2NMS(float var_nodes[_N],
 		float var_mesgs[_M], unsigned int PosNoeudsVariable[_M],
    		unsigned int loops
 		) {

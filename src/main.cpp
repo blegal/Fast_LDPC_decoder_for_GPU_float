@@ -80,7 +80,7 @@ void show_info(){
   	}
   	{
   		struct cudaFuncAttributes attr;
-  		cudaFuncGetAttributes(&attr, (const void*)LDPC_Sched_Stage_1_2NMS);
+  		cudaFuncGetAttributes(&attr, (const void*)Horiz_layered_LDPC_decoder_2NMS);
   	  	printf("(II) LDPC_Sched_Stage_1_2NMS (PTX version %d) : %2d regs, %4d shared bytes, %4d local bytes\n", attr.ptxVersion, attr.numRegs, (int)attr.localSizeBytes, (int)attr.sharedSizeBytes);
   	}
   	{

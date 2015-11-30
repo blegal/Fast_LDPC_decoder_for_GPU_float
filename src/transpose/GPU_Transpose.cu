@@ -1,6 +1,5 @@
 
 #include "GPU_Transpose.h"
-#include "simd_functions.h"
 
 __global__ void transposeDiagonal(float *odata, float *idata, int width, int height) {
 	__shared__ float tile[TILE_DIM][TILE_DIM + 1];
